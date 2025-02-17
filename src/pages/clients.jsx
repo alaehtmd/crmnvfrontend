@@ -1,13 +1,35 @@
-import React, { useState } from "react";
+// filepath: /Users/mohammedbenharrats/moncrmnvfront/src/pages/clients.jsx
+import React, { useState, useEffect } from "react";
 import "../App.css";
 import "./clitens.css";
+import { getClients, addClient } from '../api';
 
 function Clients() {
   const [clients, setClients] = useState([]);
   const [selectedClient, setSelectedClient] = useState(null);
 
-  const handleAddClient = () => {
+  useEffect(() => {
+    const fetchClients = async () => {
+      try {
+        const clientsData = await getClients();
+        setClients(clientsData);
+      } catch (error) {
+        console.error('Error fetching clients:', error);
+      }
+    };
+
+    fetchClients();
+  }, []);
+
+  const handleAddClient = async () => {
     // Logic to add a new client
+    const newClient = { /* données du nouveau client */ };
+    try {
+      const addedClient = await addClient(newClient);
+      setClients([...clients, addedClient]);
+    } catch (error) {
+      console.error('Error adding client:', error);
+    }
   };
 
   const handleEditClient = (client) => {
